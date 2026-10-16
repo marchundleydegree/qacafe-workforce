@@ -6,7 +6,9 @@ conn = sqlite3.connect(
     check_same_thread=False
 )
 
+
 cursor = conn.cursor()
+
 
 # Create the employees table
 cursor.execute("""
@@ -18,5 +20,6 @@ CREATE TABLE IF NOT EXISTS employees (
     role TEXT
 )
 """)
+
 
 conn.commit()

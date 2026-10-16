@@ -4,10 +4,12 @@ from database import conn, cursor
 # Create the Flask application
 app = Flask(__name__)
 
+
 # Home page
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 # Employees endpoint
 @app.route("/employees", methods=["GET", "POST"])
@@ -43,3 +45,4 @@ def manage_employees():
 # Run the application
 if __name__ == "__main__":
     app.run(debug=True)
+    
