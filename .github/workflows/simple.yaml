@@ -28,7 +28,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # TODO: Add flake8 linting here
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run flake8
+        run: flake8 . --count --show-source --statistics
 
 
   package:
@@ -39,4 +50,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # TODO: Zip the application here
+      - name: Zip application
+        run: |
+          zip -r dist/app.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "__pycache__/*" \
+            -x "*.pyc"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: dist/app.zip
