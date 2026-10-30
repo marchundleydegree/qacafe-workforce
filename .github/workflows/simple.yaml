@@ -41,9 +41,25 @@ jobs:
       - name: Run flake8
         run: flake8 . --count --show-source --statistics
 
-  package:
+  test:
     runs-on: ubuntu-latest
     needs: [analyse, lint]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run Pytest Tests
+        run: python -m Pytest
+
+
+
+  package:
+    runs-on: ubuntu-latest
+    needs: [analyse, lint, test]
 
     steps:
       - name: Checkout repository
