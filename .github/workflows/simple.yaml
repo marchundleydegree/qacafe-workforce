@@ -53,7 +53,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run Pytest Tests
-        run: python -m Pytest
+        run: python -m pytest
 
   package:
     runs-on: ubuntu-latest
