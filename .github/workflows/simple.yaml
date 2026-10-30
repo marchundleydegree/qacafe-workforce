@@ -57,8 +57,36 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Pytest Tests
-        run: python -m pytest
+      - name: Start Flask application
+        run: |
+          python -m flask --app app run \
+            --host 127.0.0.1 \
+            --port 5000 > flask.log 2>&1 &
+
+      - name: Check Flask availability
+        run: |
+          for i in {1..20}; do
+            if curl --fail --silent \
+              http://127.0.0.1:5000/ > /dev/null; then
+              echo "Flask application is ready"
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Flask application failed to start"
+          cat flask.log
+          exit 1
+
+      - name: Run Pytest and Playwright tests
+        run: python -m pytest -v
+
+      - name: Display Flask logs on failure
+        if: failure()
+        run: |
+          if [ -f flask.log ]; then
+            cat flask.log
+          fi
 
   package:
     runs-on: ubuntu-latest
@@ -69,11 +97,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create Distribution Directory
-        run: mkdir -p dist 
+        run: mkdir -p dist
 
       - name: Zip application
         run: |
-          zip -r dist/app.zip . \
+          zip -r dist/app.zip \
             app.py \
             database.py \
             requirements.txt \
