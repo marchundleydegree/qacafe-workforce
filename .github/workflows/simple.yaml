@@ -55,8 +55,6 @@ jobs:
       - name: Run Pytest Tests
         run: python -m Pytest
 
-
-
   package:
     runs-on: ubuntu-latest
     needs: [analyse, lint, test]
