@@ -1,5 +1,3 @@
-import re
-
 import pytest
 from playwright.sync_api import APIRequestContext, Playwright
 
@@ -35,7 +33,7 @@ def test_post_employee(api_request: APIRequestContext):
     """Check that POST /employees creates an employee."""
 
     new_employee = {
-        "name": "Test Employee",        
+        "name": "Test Employee",
         "start_date": "2026-10-30",
         "location": "Somewhere",
         "role": "Person"
@@ -47,4 +45,4 @@ def test_post_employee(api_request: APIRequestContext):
     )
 
     assert response.status == 201
-    assert response.text() =="Employee added successfully"
+    assert response.text() == "Employee added successfully"
